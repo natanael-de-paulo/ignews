@@ -1,0 +1,9 @@
+[
+  {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "my_slice",
+    "items": [],
+    "primary": {}
+  }
+]

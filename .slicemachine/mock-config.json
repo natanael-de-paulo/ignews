@@ -1,0 +1,20 @@
+{
+  "_cts": {
+    "publication": {
+      "content": {
+        "config": {
+          "patternType": "PARAGRAPH",
+          "blocks": 1
+        }
+      }
+    }
+  },
+  "slices": {
+    "MySlice": {
+      "default": {
+        "primary": {},
+        "items": {}
+      }
+    }
+  }
+}
