@@ -5,7 +5,18 @@ import { RichText } from  'prismic-dom'
 import { getPrismicCliente } from '../../services/prismic';
 import styles from './styles.module.scss';
 
-export default function Posts(){
+type Post = {
+  slug: string,
+  title: string,
+  exerpt: string,
+  updatedAt: string,
+}
+
+interface PostsProps{
+  posts: Post[]
+}
+
+export default function Posts({posts} : PostsProps){
   return (
     <>
       <Head>
@@ -13,24 +24,13 @@ export default function Posts(){
       </Head>
       <main className={styles.container}>
         <article className={styles.posts}>
-          <a href="#">
-            <time>2022</time>
-            <strong>Teste</strong>
-            <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil veniam dolore nostrum rem facilis. Quas, magnam expedita omnis enim ducimus, a at officiis laudantium adipisci eaque nisi, ut tempore atque. </p>
-          </a>
-
-          <a href="#">
-            <time>2022</time>
-            <strong>Teste</strong>
-            <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil veniam dolore nostrum rem facilis. Quas, magnam expedita omnis enim ducimus, a at officiis laudantium adipisci eaque nisi, ut tempore atque. </p>
-          </a>
-
-
-          <a href="#">
-            <time>2022</time>
-            <strong>Teste</strong>
-            <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil veniam dolore nostrum rem facilis. Quas, magnam expedita omnis enim ducimus, a at officiis laudantium adipisci eaque nisi, ut tempore atque. </p>
-          </a>
+          { posts.map( post => (
+            <a href="#" key={post.slug}>
+              <time> { post.updatedAt } </time>
+              <strong> { post.title } </strong>
+              <p> {post.exerpt } </p>
+            </a>
+          ))}
         </article>
       </main>
     </>
@@ -53,8 +53,8 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       slug: post.uid,
       title: RichText.asText(post.data.title),
-      exerpt: post.data.content.find(content => content.type === 'paragraph')?. text ?? '',
-      updatedAt :new Date(posts.last_piblication_date).toLocaleDateString('pt-BR',  {
+      exerpt: post.data.content.find((content: any) => content.type === 'paragraph')?. text ?? '',
+      updatedAt: new Date(posts.last_piblication_date).toLocaleDateString('pt-BR',  {
         day:'2-digit',
         month:'long',
         year: 'numeric'
@@ -62,6 +62,8 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   })
   return {
-    props: {}
+    props: {
+      posts
+    }
   }
 }
