@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Prismic from '@prismicio/client'
 import { RichText } from  'prismic-dom'
-import { getPrismicCliente } from '../../services/prismic';
+import { getPrismicClient } from '../../services/prismic';
 import styles from './styles.module.scss';
 
 type Post = {
@@ -40,7 +40,7 @@ export default function Posts({posts} : PostsProps){
 
 
 export const getStaticProps: GetStaticProps = async () => {
-  const prismic = getPrismicCliente()
+  const prismic = getPrismicClient()
   const response = await prismic.query([
     Prismic.predicates.at('document.type', 'publication')
   ],{
@@ -54,7 +54,7 @@ export const getStaticProps: GetStaticProps = async () => {
       slug: post.uid,
       title: RichText.asText(post.data.title),
       exerpt: post.data.content.find((content: any) => content.type === 'paragraph')?. text ?? '',
-      updatedAt: new Date(posts.last_piblication_date).toLocaleDateString('pt-BR',  {
+      updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',  {
         day:'2-digit',
         month:'long',
         year: 'numeric'
